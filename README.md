@@ -4,9 +4,9 @@
 
 # Links
 
-GitHub Repository: 
+GitHub Repository: https://github.com/Greeny467/project_2
 <br>
-Deployed Application: https://github.com/Greeny467/project_2
+Deployed Application:
 
 ## Description
 
