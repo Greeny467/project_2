@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS terse_db;
+CREATE DATABASE terse_db;

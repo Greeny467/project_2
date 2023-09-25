@@ -10,5 +10,8 @@
     "mysql2": "^3.6.1",
     "path": "^0.12.7",
     "sequelize": "^6.33.0"
+  },
+  "scripts": {
+    "seed": "node seeds/seed.js"
   }
 }
