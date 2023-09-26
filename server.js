@@ -37,6 +37,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(routes);
 
 //start server
-sequelize.AsyncQueueError({ force: false}).then(() => {
-    app.listen(PORT, () => console.log(`app listening at ${PORT}`));
+sequelize.sync({ force: false }).then(() => {
+    app.listen(PORT, () => console.log(`App listening at ${PORT}`));
 });

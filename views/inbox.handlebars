@@ -1,5 +1,6 @@
 <main>
     {{#if loggedIn}}
+    <h2>Inbox</h2>
     {{#if areThereRequests}}
     {{#each requests as |request|}}
     <div>
@@ -8,6 +9,8 @@
         <button id="decline">Decline</button>
     </div>
     {{/each}}
+    {{else}}
+    <h2>Empty...</h2>
     {{/if}}
     {{/if}}
 </main>
