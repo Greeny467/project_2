@@ -4,8 +4,9 @@
 
     <div id="messageArea">
         {{#unless areThereMessages}}
-        <h2>Empty</h2>
+        <h2>Empty..</h2>
         {{/unless}}
+       
     </div>
 
     <input name="userText" placeholder="Write">
@@ -15,5 +16,11 @@
 
 </footer>
 {{#if loggedIn}}
+<script>
+    var sessionMessages = {{{json simpleMessages}}};
+    var sessionChat = {{{json simpleChat}}};
+    var sessionUserId = {{userId}};
+</script>
+
 <script src="/js/chat.js"></script>
 {{/if}}
