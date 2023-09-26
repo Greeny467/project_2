@@ -1,45 +1,64 @@
 const router = require('express').Router();
 const {User, Chat, Message, Request} = require('../models');
+const {Op} = require('sequelize');
+
+const withAuth = require('../util/auth');
 
 //Home page routes
 router.get('/', async (req, res) => {
     try{
 
         //Get all chats which this user belongs to
-        const homeData = await Chat.findAll(
-            {
-                where: {
-                    [Op.or]: [
-                        { user1_id: req.session.userId },
-                        { user2_id: req.session.userId }
-                      ]
+        if(req.session.userId){
+            console.log(1);
+            const homeData = await Chat.findAll(
+                {
+                    where: {
+                        [Op.or]: [
+                            { user1_id: req.session.userId },
+                            { user2_id: req.session.userId }
+                          ]
+                    }
                 }
-            }
-        );
-        
-        //Give variable for a boolean to show whether there are chats or not.
-        let areThereChats
-        
-        if(!homeData){
-            areThereChats = false;
-        }
-        else{
-            areThereChats = true;
+            );
 
-            // simplify homeData into chats variable
-            const chats = homeData.map((chat) => (
-                chat.get({plain: true})
-            ));
-            
+            console.log(2);
+            //Give variable for a boolean to show whether there are chats or not.
+            let areThereChats
+            let chats
+
+            if(homeData.length === 0 ){
+                areThereChats = false;
+                console.log('noLength');
+            }
+            else{
+                areThereChats = true;
+                console.log(3);
+                // simplify homeData into chats variable
+                chats = homeData.map((chat) => (
+                    chat.get({plain: true})
+                ));
+                
+            };
 
             // render home template with specified data
+            res.status(200);
             res.render('home', {
                 loggedIn: req.session.loggedIn,
                 userId: req.session.userId,
                 chats,
                 areThereChats
             });
+        }
+        else{
+            const areThereChats = false;
+
             res.status(200);
+            res.render('home', {
+                areThereChats,
+                loggedIn: req.session.loggedIn,
+
+            });
         };
     }
     catch (err) {
@@ -50,7 +69,7 @@ router.get('/', async (req, res) => {
 
 
 //inbox routes
-router.get('/inbox', async (req, res) => {
+router.get('/inbox', withAuth, async (req, res) => {
     try{
 
         // Get all requests in which the recipient is the logged in user. Include the author user.
@@ -96,7 +115,7 @@ router.get('/inbox', async (req, res) => {
 
 
 //userpage routes
-router.get('/user/:id', async (req, res) => {
+router.get('/user/:id', withAuth, async (req, res) => {
     try{
 
         // Get user data from id, include all chats They have.
@@ -134,7 +153,7 @@ router.get('/user/:id', async (req, res) => {
 
 
 //chat routes
-router.get('/chat/:id', async (req, res) => {
+router.get('/chat/:id', withAuth, async (req, res) => {
     try{
 
         // Find chat of the url id param. Then simplify it. 
