@@ -39,6 +39,7 @@ router.get('/', async (req, res) => {
                 chats,
                 areThereChats
             });
+            res.status(200);
         };
     }
     catch (err) {
@@ -84,7 +85,8 @@ router.get('/inbox', async (req, res) => {
                 areThereRequests,
                 requests
             });
-        }
+            res.status(200);
+        };
     }
     catch (err) {
         console.error(err);
@@ -121,6 +123,7 @@ router.get('/user/:id', async (req, res) => {
                 userId: req.session.userId,
                 user
             });
+            res.status(200);
         };
     }
     catch (err) {
@@ -186,6 +189,7 @@ router.get('/chat/:id', async (req, res) => {
                         simpleChat,
                         simpleMessages,
                     })
+                    res.status(200);
                 }
             }
             else{
@@ -193,6 +197,21 @@ router.get('/chat/:id', async (req, res) => {
                 console.log('rejected');
             }
         }
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json(err);
+    };
+});
+
+router.get('/login', async (req, res) => {
+    try{
+        if(!req.session.loggedIn){
+            res.render('login');
+        }
+        else{
+            res.redirect('/')
+        };
     }
     catch (err) {
         console.error(err);

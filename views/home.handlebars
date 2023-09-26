@@ -1,0 +1,18 @@
+<h1>Terse</h1>
+
+{{#if loggedIn}}
+<input name="search" placeholder="search">
+<button id="submit">submit</button>
+
+{{#if areThereChats}}
+{{#each chats as |chat|}}
+<a href="/chat/{{chat.id}}">
+    <h3>{{chat.title}}</h3>
+</a>
+{{/each}}
+{{/if}}
+
+{{else}}
+<a href="/login">Login</a>
+{{/if}}
+
