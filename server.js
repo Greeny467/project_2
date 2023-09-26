@@ -26,6 +26,11 @@ const sess = {
 
 app.use(session(sess));
 
+hbs.handlebars.registerHelper('json', function (content) {
+    return JSON.stringify(content);
+});
+
+
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 

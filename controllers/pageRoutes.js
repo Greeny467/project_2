@@ -10,7 +10,6 @@ router.get('/', async (req, res) => {
 
         //Get all chats which this user belongs to
         if(req.session.userId){
-            console.log(1);
             const homeData = await Chat.findAll(
                 {
                     where: {
@@ -22,18 +21,15 @@ router.get('/', async (req, res) => {
                 }
             );
 
-            console.log(2);
             //Give variable for a boolean to show whether there are chats or not.
             let areThereChats
             let chats
 
             if(homeData.length === 0 ){
                 areThereChats = false;
-                console.log('noLength');
             }
             else{
                 areThereChats = true;
-                console.log(3);
                 // simplify homeData into chats variable
                 chats = homeData.map((chat) => (
                     chat.get({plain: true})
@@ -194,22 +190,22 @@ router.get('/chat/:id', withAuth, async (req, res) => {
                 // boolean to show if there are any messages
                 let areThereMessages;
 
-                if(!simpleMessages){
+                if(simpleMessages.length === 0){
                     areThereMessages = false;
                 }
                 else{
                     areThereMessages = true;
+                };
 
-                    // render chat template with all specified info. 
-                    res.render('chat', {
-                        loggedIn: req.session.loggedIn,
-                        userId: req.session.userId,
-                        areThereMessages,
-                        simpleChat,
-                        simpleMessages,
-                    })
-                    res.status(200);
-                }
+                // render chat template with all specified info. 
+                res.render('chat', {
+                    loggedIn: req.session.loggedIn,
+                    userId: req.session.userId,
+                    areThereMessages,
+                    simpleChat,
+                    simpleMessages,
+                })
+                res.status(200);
             }
             else{
                 // if the logged in user does not belong to the chat, they don't get the message data. 
