@@ -1,0 +1,2 @@
+// Create functionallity to the accept and reject buttons. On accept, a post request should be made to the api db chat route, 
+//and the request should be deleted with a delete request to the api db requests route. if rejected, the request should just be deleted. 
