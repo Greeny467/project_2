@@ -4,7 +4,7 @@ const { User } = require('../../models');
 // when first coming to our website, system will check if there is a saved user logged in
 router.post('/', async (req, res) => {
   try {
-    const existingUser = await User.create({
+    const newUser = await User.create({
       username: req.body.username,
       email: req.body.email,
       password: req.body.password,
@@ -13,8 +13,9 @@ router.post('/', async (req, res) => {
     //if there is a user logged in, session storage will save them until they actually push 'log out'
     req.session.save(() => {
       req.session.loggedIn = true;
+      req.session.userId = newUser.id;
 
-      res.status(200).json(existingUser);
+      res.status(200).json(newUser);
     });
   } catch (err) {
     console.log(err);
@@ -49,7 +50,8 @@ router.post('/login', async (req, res) => {
 
     req.session.save(() => {
       req.session.loggedIn = true;
-
+      req.session.userId = existingUser.id;
+      
       res
         .status(200)
         .json({ user: existingUser, message: 'You are now logged in!' });
