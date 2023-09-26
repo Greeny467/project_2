@@ -1,12 +1,16 @@
-<a href="../">Home</a>
+<main>
+    
+    <h2>{{simpleChat.title}}</h2>
 
-<h2>simpleChat.title</h2>
+    <div id="messageArea">
+        {{#unless areThereMessages}}
+        <h2>Empty</h2>
+        {{/unless}}
+    </div>
 
-<div id="messageArea">
-    {{#unless areThereMessages}}
-    <h2>Empty</h2>
-    {{/unless}}
-</div>
-
-<input name="userText" placeholder="Write">
-<button id="submit">Send</button>
+    <input name="userText" placeholder="Write">
+    <button id="submit">Send</button>
+</main>
+<footer>
+    
+</footer>

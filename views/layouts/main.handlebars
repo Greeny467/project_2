@@ -7,26 +7,27 @@
     <title>Terse</title>
 </head>
 <body>
-    <section class="row">
-        <header class="col s6 m8">
-        Welcome to Terse!
-        </header>
-        <nav class="col s6 m4">
-            <a href="/home">Home</a>
-            {{#if loggedIn}}
-            <a href="api/messages">Messages</a>
-            <button id="logout">Logout</a>
-            {{else}}
-            <a href="api/login">Login</a>
-            <a href="api/signUp">Sign Up</a>
-            {{/if}}
-        </nav>
-    </section>
-    <section class="container">
-        {{!-- Picture of the website in use and/or description/hook --}}
-    </section>
+    <header>
+        <section class="row">
+            <section class="col s6 m8">
+                <h1>Terse</h1>
+                <nav class="col s6 m4">
+                <a href="/home">Home</a>
+                {{#if loggedIn}}
+                <button id="logout">Logout</a>
+                {{else}}
+                <a href="/login">Login/Register</a>
+                {{/if}}
+                </nav>
+            </section>
+        </section>
+
+    </header>
+    
+    {{{body}}}
+    
     {{#if loggedIn}}
-  <script src="/js/logout.js"></script>
-  {{/if}}
+    <script src="/js/logout.js"></script>
+    {{/if}}
 </body>
 </html>
