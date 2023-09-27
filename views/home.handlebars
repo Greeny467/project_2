@@ -1,7 +1,10 @@
 <main>
     {{#if loggedIn}}
-    <input name="search" placeholder="search">
-    <button id="submit">submit</button>
+    <div id="searchBox">
+        <input name="search" placeholder="search" id="search">
+        <ul id="resultsList"></ul>
+    </div>
+    
 
     {{#if areThereChats}}
     {{#each chats as |chat|}}
