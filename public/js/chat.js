@@ -13,11 +13,13 @@ const createAllMessages = () => {
 
         let authorName;
         if(message.author_id === userId) {
-            messageBlock.className = 'rightMessage';
+            // Roughly the css for user's messages to appear the on the right: class = "s6 offset-s6 m6 offset-m6 l6 offset-l6" s, m, & l are for responsiveness
+            messageBlock.className = 'rightMessage s6 offset-s6 m6 offset-m6 l6 offset-l6';
             authorName = 'You'
         }
         else{
-            messageBlock.className = 'leftMessage';
+            // Roughly the css for friend's messages to appear on the left: class = "s6 m6 l6"
+            messageBlock.className = 'leftMessage s6 m6 l6';
             authorName = message.author.username;
         };
         const messageHeading = document.createElement('div')
