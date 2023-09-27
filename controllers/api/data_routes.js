@@ -1,14 +1,11 @@
 const router = require('express').Router();
-const { json, request } = require('express');
 const {User,Chat,Request,Message} =require('../../models');
 
 //routes for user
 router.get('/user', async (req,res) =>{
     try{
         const userData = await User.findAll();
-        const users = userData.map((user)=>{
-            user.get({plain:true})
-        });
+        const users = userData.map((user) => user.get({ plain: true }));
 
         if(users.length===0){
             res.status(404).json({message:'no users'});
@@ -45,9 +42,7 @@ router.get('/user/:id', async (req,res) =>{
 router.get('/chat', async (req,res) =>{
     try{
         const chatData = await Chat.findAll();
-        const chats = chatData.map((chat)=>{
-            chat.get({plain:true});
-        })
+        const chats = chatData.map((chat) => chat.get({ plain: true }));
 
         if(chats.length===0){
             res.status(404).json({message:'no chats'});
@@ -191,3 +186,5 @@ router.delete('/request/:id', async (req,res) =>{
         res.status(500).json(err);
     }
 })
+
+module.exports = router;
