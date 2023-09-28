@@ -132,6 +132,16 @@ router.get('/user/:id', withAuth, async (req, res) => {
                             through: { attributes: [] } 
                         }
                     ]
+                },
+                {
+                    model: User,
+                    as: 'friend1',
+                    through: Friendship,
+                },
+                {
+                    model: User,
+                    as: 'friend2',
+                    through: Friendship,
                 }
             ]
         });
@@ -147,7 +157,6 @@ router.get('/user/:id', withAuth, async (req, res) => {
 
             // simplify userData
             const user = userData.get({plain: true});
-
 
             // render user template with specified data
             res.status(200);
