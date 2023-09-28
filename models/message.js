@@ -22,13 +22,6 @@ Message.init(
                 key: 'id',
             }
         },
-        recipient_id: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'user',
-                key: 'id',
-            }
-        },
         chat_id: {
             type: DataTypes.INTEGER,
             references: {

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {User, Chat, Message, Request} = require('../models');
+const {User, Chat, Message, Request, ChatUser} = require('../models');
 const {Op} = require('sequelize');
 
 const withAuth = require('../util/auth');
@@ -12,12 +12,17 @@ router.get('/', async (req, res) => {
         if(req.session.userId){
             const homeData = await Chat.findAll(
                 {
-                    where: {
-                        [Op.or]: [
-                            { user1_id: req.session.userId },
-                            { user2_id: req.session.userId }
-                          ]
-                    }
+                    include: [
+                        {
+                          model: User,
+                          required: true,
+                          where: {
+                            id: req.session.userId, 
+                          },
+                          attributes: [], 
+                        },
+                      ],
+                    
                 }
             );
 
@@ -116,15 +121,27 @@ router.get('/user/:id', withAuth, async (req, res) => {
 
         // Get user data from id, include all chats They have.
         const userData = await User.findByPk(req.params.id, {
-            include: [{
-                model: Chat,
-                attributes: ['id'],
-            }]
+            include: [
+                {
+                    model: Chat,
+                    as: 'chatUser',
+                    include: [
+                        {
+                            model: User, 
+                            attributes: ['id'],
+                            through: { attributes: [] } 
+                        }
+                    ]
+                }
+            ]
         });
 
         // 404 status if there is no user of the id
         if (!userData){
-            res.status(404).json({message: 'No user of this ID found'});
+            res.status(404).json({
+                message: 'No user of this ID found',
+                data: userData
+            });
         }
         else{
 
@@ -133,12 +150,12 @@ router.get('/user/:id', withAuth, async (req, res) => {
 
 
             // render user template with specified data
+            res.status(200);
             res.render('user', {
                 loggedIn: req.session.loggedIn,
                 userId: req.session.userId,
                 user
             });
-            res.status(200);
         };
     }
     catch (err) {
@@ -153,7 +170,11 @@ router.get('/chat/:id', withAuth, async (req, res) => {
     try{
 
         // Find chat of the url id param. Then simplify it. 
-        const chat = await Chat.findByPk(req.params.id);
+        const chat = await Chat.findByPk(req.params.id, {
+            include: [{
+                model: User,
+            }]
+        });
         const simpleChat = chat.get({plain: true});
 
         //if there is no chat, give a 404 status. 
@@ -164,11 +185,13 @@ router.get('/chat/:id', withAuth, async (req, res) => {
             
             //Create variables for the users who belong to the chat and the user who is logged in. 
             const thisUser = req.session.userId.toString();
-            const postUser1 = simpleChat.user1_id.toString();
-            const postUser2 = simpleChat.user2_id.toString();
+            console.log(simpleChat);
+
+            const belongsToChat = simpleChat.users.some(user => user.id.toString() === thisUser);
+
 
             // Check to see if the logged in user belongs to the chat or not. 
-            if(thisUser === postUser1 || thisUser === postUser2){
+            if(belongsToChat === true){
 
                 // Find all messages which belong to the chat, and include the username and id of the author
                 const messages = await Message.findAll({

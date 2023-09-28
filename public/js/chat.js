@@ -22,7 +22,9 @@ const createAllMessages = () => {
             messageBlock.className = 'leftMessage s6 m6 l6';
             authorName = message.author.username;
         };
-        const messageHeading = document.createElement('div')
+
+        console.log(authorName, message.createdAt, message.text);
+        const messageHeading = document.createElement('div');
         messageHeading.className = 'messageHeading';
 
         const authorText = document.createElement('h4');
