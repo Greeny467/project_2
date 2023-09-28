@@ -1,5 +1,8 @@
 // query select page elements, and get message data from the view. 
-const messageArea = document.querySelector('#messageArea')
+const messageArea = document.querySelector('#messageArea');
+const inviteButton = document.querySelector('#inviteButton');
+const inviteSpace = document.querySelector('#inviteSpace');
+
 const messages = sessionMessages;
 const userId = sessionUserId;
 const chat = sessionChat;
@@ -45,6 +48,27 @@ const createAllMessages = () => {
         messageArea.appendChild(messageBlock);
     });
 }
+
+// function to create invite tab
+const inviteTab = () =>{
+    inviteSpace.innerHTML = "";
+
+    const backButton = document.createElement('button');
+    backButton.textContent = 'Back';
+    inviteSpace.append(backButton);
+
+    user.friends.forEach(friend => {
+        const friendName = document.createElement('h3');
+        friendName.textContent = friend.username;
+
+        const inviteUser = document.createElement('button');
+        inviteUser.textContent = 'Invite';
+
+        
+        inviteSpace.append(friendName);
+        inviteSpace.append(inviteUser);
+    });
+};
 
 //Create a function to send a fetch (POST) request to the database route for posting messages.
 

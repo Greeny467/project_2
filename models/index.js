@@ -3,7 +3,9 @@ const User = require('./user');
 const Chat = require('./chat');
 const Message = require('./message');
 const Request = require('./request');
+
 const ChatUser = require('./chatUser');
+const Friendship = require('./friendship');
 
 // Every chat has multiple users. every user has multiple chats. 
 User.belongsToMany(Chat, {
@@ -45,4 +47,22 @@ Message.belongsTo(Chat, {
     onDelete: 'CASCADE'
 });  
 
-module.exports = {User, Chat, Message, Request, ChatUser};
+//users have many friends. 
+
+User.belongsToMany(User, {
+    foreignKey: 'friend1_id',
+    as: 'friend1',
+    through: {
+        model: Friendship,
+    },
+});
+
+User.belongsToMany(User, {
+    foreignKey: 'friend2_id',
+    as: 'friend2',
+    through: {
+        model: Friendship,
+    },
+});
+
+module.exports = {User, Chat, Message, Request, ChatUser, Friendship};
