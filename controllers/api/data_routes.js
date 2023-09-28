@@ -131,6 +131,25 @@ router.post('/message', async (req,res) =>{
 })
 
 //request routes
+router.get('/request', async (req,res) =>{
+    try{
+        const requestData = await Request.findAll();
+        const requests = requestData.map((request) => request.get({ plain: true }));
+
+        if(requests.length===0){
+            res.status(404).json({message:'no requests'});
+        }
+        else{
+            res.status(200).json(requests);
+        };
+
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json(err);
+    }
+})
+
 router.get('/request/:id', async (req,res) =>{
     try{
         const requestData = await User.findByPk(req.params.id);
@@ -150,20 +169,26 @@ router.get('/request/:id', async (req,res) =>{
 
 router.post('/request', async (req,res) =>{
     const {author_id,recipient_id} = req.body
-    try{
-        const requestData = await Request.create(req.body);
-
-        if(!requestData){
-            res.status(404).json({message:'Failed to post request'});
+    console.log(req.body, req.body.author_id, req.body.recipient_id)
+    if(req.body && req.body.author_id && req.body.recipient_id){
+        try{
+            const requestData = await Request.create(req.body);
+    
+            if(!requestData){
+                res.status(404).json({message:'Failed to post request'});
+            }
+            else{
+                res.status(200).json(requestData);
+            }
+    
         }
-        else{
-            res.status(200).json(requestData);
-        }
-
+        catch (err) {
+            console.error(err);
+            res.status(500).json(err);
+        };
     }
-    catch (err) {
-        console.error(err);
-        res.status(500).json(err);
+    else{
+        res.status(400).json({message: 'bad request'});
     };
 })
 

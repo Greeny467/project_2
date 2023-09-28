@@ -1,57 +1,47 @@
 [
-    {
+  {
       "text": "Hello, how are you?",
       "author_id": 3,
-      "recipient_id": 7,
       "chat_id": 1
-    },
-    {
+  },
+  {
       "text": "I'm good, thanks! How about you?",
       "author_id": 7,
-      "recipient_id": 3,
       "chat_id": 1
-    },
-    {
+  },
+  {
       "text": "I'm doing well too. What's new?",
       "author_id": 3,
-      "recipient_id": 7,
       "chat_id": 1
-    },
-    {
+  },
+  {
       "text": "What's up?",
       "author_id": 2,
-      "recipient_id": 6,
       "chat_id": 2
-    },
-    {
+  },
+  {
       "text": "Not much, just chilling.",
       "author_id": 6,
-      "recipient_id": 2,
       "chat_id": 2
-    },
-    {
+  },
+  {
       "text": "Same here, lazy Sunday.",
       "author_id": 2,
-      "recipient_id": 6,
       "chat_id": 2
-    },
-    {
+  },
+  {
       "text": "Hey, how's it going?",
       "author_id": 8,
-      "recipient_id": 11,
       "chat_id": 3
-    },
-    {
+  },
+  {
       "text": "Good, thanks! How about you?",
       "author_id": 11,
-      "recipient_id": 8,
       "chat_id": 3
-    },
-    {
+  },
+  {
       "text": "I'm great, just got back from a vacation.",
       "author_id": 8,
-      "recipient_id": 11,
       "chat_id": 3
-    }
-  ]
-  
+  }
+]

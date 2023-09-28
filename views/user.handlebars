@@ -3,10 +3,14 @@
     <h1>{{user.username}}</h1>
 
     {{#if loggedIn}}
-    <button id="sendRequest">Friend?</button>
+    <div id="userArea"></div>
     {{/if}}
 </main>
 
 {{#if loggedIn}}
-<script src="/js/userpage"></script>
+<script>
+    var sessionUserId = {{userId}};
+    var sessionUserData = {{{json user}}};
+</script>
+<script src="/js/userpage.js"></script>
 {{/if}}
