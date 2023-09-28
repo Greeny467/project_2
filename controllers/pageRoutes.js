@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {User, Chat, Message, Request, ChatUser} = require('../models');
+const {User, Chat, Message, Request, ChatUser, Friendship} = require('../models');
 const {Op} = require('sequelize');
 
 const withAuth = require('../util/auth');
@@ -175,17 +175,42 @@ router.get('/chat/:id', withAuth, async (req, res) => {
                 model: User,
             }]
         });
+        const user = await User.findByPk(req.session.userId, {
+            include: [
+              {
+                model: User,
+                as: 'friend1',
+                through: {
+                  model: Friendship,
+                  as: 'friendship1',
+                },
+              },
+              {
+                model: User,
+                as: 'friend2',
+                through: {
+                  model: Friendship,
+                  as: 'friendship2',
+                },
+              },
+            ],
+          });
+
+        
+        const simpleUser = user.get({plain: true});
         const simpleChat = chat.get({plain: true});
 
         //if there is no chat, give a 404 status. 
-        if(!simpleChat){
+        if(!simpleChat || !simpleUser){
             res.status(404).json({message: 'There is no chat of this ID'});
+        }
+        else if (!simpleUser){
+            res.status(404).json({message: 'Failed to get friends'});
         }
         else{
             
             //Create variables for the users who belong to the chat and the user who is logged in. 
             const thisUser = req.session.userId.toString();
-            console.log(simpleChat);
 
             const belongsToChat = simpleChat.users.some(user => user.id.toString() === thisUser);
 
@@ -226,6 +251,7 @@ router.get('/chat/:id', withAuth, async (req, res) => {
                     userId: req.session.userId,
                     areThereMessages,
                     simpleChat,
+                    simpleUser,
                     simpleMessages,
                 })
                 res.status(200);

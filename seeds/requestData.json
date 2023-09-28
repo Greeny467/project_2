@@ -1,23 +1,28 @@
 [
     {
       "author_id": 4,
-      "recipient_id": 9
+      "recipient_id": 9,
+      "type": "friend"
     },
     {
       "author_id": 5,
-      "recipient_id": 12
+      "recipient_id": 12,
+      "type": "friend"
     },
     {
       "author_id": 10,
-      "recipient_id": 13
+      "recipient_id": 13,
+      "type": "chat"
     },
     {
       "author_id": 15,
-      "recipient_id": 6
+      "recipient_id": 6,
+      "type": "chat"
     },
     {
       "author_id": 7,
-      "recipient_id": 14
+      "recipient_id": 14,
+      "type": "chat"
     }
   ]
   

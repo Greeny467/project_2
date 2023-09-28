@@ -24,6 +24,10 @@ Request.init(
                 model: 'user',
                 key: 'id',
             }
+        },
+        type: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     },
     {

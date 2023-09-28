@@ -1,0 +1,82 @@
+[
+    {
+        "friend1_id": 1,
+        "friend2_id": 2
+    },
+    {
+        "friend1_id": 3,
+        "friend2_id": 4
+    },
+    {
+        "friend1_id": 5,
+        "friend2_id": 6
+    },
+    {
+        "friend1_id": 7,
+        "friend2_id": 8
+    },
+    {
+        "friend1_id": 9,
+        "friend2_id": 10
+    },
+    {
+        "friend1_id": 11,
+        "friend2_id": 12
+    },
+    {
+        "friend1_id": 13,
+        "friend2_id": 14
+    },
+    {
+        "friend1_id": 15,
+        "friend2_id": 1
+    },
+    {
+        "friend1_id": 2,
+        "friend2_id": 3
+    },
+    {
+        "friend1_id": 4,
+        "friend2_id": 5
+    },
+    {
+        "friend1_id": 6,
+        "friend2_id": 7
+    },
+    {
+        "friend1_id": 8,
+        "friend2_id": 9
+    },
+    {
+        "friend1_id": 10,
+        "friend2_id": 11
+    },
+    {
+        "friend1_id": 12,
+        "friend2_id": 13
+    },
+    {
+        "friend1_id": 14,
+        "friend2_id": 15
+    },
+    {
+        "friend1_id": 1,
+        "friend2_id": 5
+    },
+    {
+        "friend1_id": 6,
+        "friend2_id": 10
+    },
+    {
+        "friend1_id": 11,
+        "friend2_id": 15
+    },
+    {
+        "friend1_id": 2,
+        "friend2_id": 4
+    },
+    {
+        "friend1_id": 7,
+        "friend2_id": 9
+    }
+]
