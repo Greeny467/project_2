@@ -7,10 +7,50 @@ const messages = sessionMessages;
 const userId = sessionUserId;
 const chat = sessionChat;
 
+// create a friends array and a friends to invite array, then add all the client users friends to the friends array. 
+const friends = [];
+let friendsToInvite = [];
+
+fetch(`/api/db/user/${userId}`)
+.then((response) => {
+    return response.json();
+})
+.then((user) => {
+    user.friend1.forEach(friend => {
+        friends.push(friend);
+    });
+    user.friend2.forEach(friend => {
+        friends.push(friend);
+    });
+});
+
+// function to set the friendsToInvite array to empty and then add friends to it from the friends array where friends are not in the chat and haven't been invited. 
+const setFriends = () => {
+    friendsToInvite = [];
+
+    fetch('/api/db/request')
+    .then((response) => {
+        return response.json();
+    })
+    .then((requests) => {
+        friends.forEach(friend => {
+            const isFriendInChat = chat.users.some(user => user.id === friend.id);
+            const hasRequestToFriend = requests.some(request => request.recipient_id === friend.id);
+        
+            if (!isFriendInChat && !hasRequestToFriend) {
+                friendsToInvite.push(friend);
+            }
+        });
+    });
+}
+
+console.log(friendsToInvite);
+
+
 console.log(messages, userId, chat);
-//For each message, if the userId = message.author_id, then the message is created in the message holding div on the right. Otherwise, its created on the left.
-//Each message should be generated with the message.user.username and the message.text.
-const createAllMessages = () => {
+
+// For each message belonging to the chat, if it was written by someone else it is created on the left side of the screen, if the client user made it, it is created on the right side. 
+const createAllMessages = async () => {
     messages.forEach(message => {
         const messageBlock = document.createElement('div');
 
@@ -49,29 +89,59 @@ const createAllMessages = () => {
     });
 }
 
-// function to create invite tab
-const inviteTab = () =>{
-    inviteSpace.innerHTML = "";
+// functionality to the back button for the invite tab.
+const inviteBackButton = async (element) => {
+    element.remove();
+    inviteButton.style.display = 'block';
+    setFriends();
+
+};
+
+// function to send a request and remove ability to invite the given user after. 
+const inviteUserSend = async (user, element) => {
+    const postInvite = await fetch('/api/db/request', {
+        method: 'POST',
+        body: JSON.stringify({
+            "author_id": userId,
+            "recipient_id": user.id,
+            "type": 'chat',
+            "inviteChat_id": chat.id
+        }),
+        headers: { 'Content-Type': 'application/json' }
+    });
+
+    if(postInvite.ok){
+        element.remove();
+    };
+};
+
+// function to create invite tab with all friends who can be invited
+const inviteTab = async () =>{
+    inviteButton.style.display = 'none';
+
+    const inviteArea = document.createElement('div');
 
     const backButton = document.createElement('button');
     backButton.textContent = 'Back';
-    inviteSpace.append(backButton);
+    backButton.addEventListener('click', () => inviteBackButton(inviteArea));
+    inviteArea.append(backButton)
 
-    user.friends.forEach(friend => {
-        const friendName = document.createElement('h3');
+    friendsToInvite.forEach(friend => {
+        const friendName = document.createElement('p');
         friendName.textContent = friend.username;
 
         const inviteUser = document.createElement('button');
-        inviteUser.textContent = 'Invite';
+        inviteUser.textContent = 'Invite Friend';
+        inviteUser.addEventListener('click', () => inviteUserSend(friend, inviteUser));
 
         
-        inviteSpace.append(friendName);
-        inviteSpace.append(inviteUser);
+        inviteArea.append(friendName);
+        inviteArea.append(inviteUser);
     });
+    inviteSpace.append(inviteArea);
 };
 
-//Create a function to send a fetch (POST) request to the database route for posting messages.
-
-// addEventListener on send button to enact the function with the values from the page elements. 
-
+// set up initial friendsToInvite array and create all messages, as well as add invite button event listener. 
+setFriends();
 createAllMessages();
+inviteButton.addEventListener('click', () => inviteTab());
