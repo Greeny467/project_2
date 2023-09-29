@@ -23,7 +23,20 @@ router.get('/user', async (req,res) =>{
 
 router.get('/user/:id', async (req,res) =>{
     try{
-        const userData = await User.findByPk(req.params.id);
+        const userData = await User.findByPk(req.params.id, {
+            include: [
+                {
+                    model: User,
+                    as: 'friend1',
+                    through: Friendship,
+                },
+                {
+                    model: User,
+                    as: 'friend2',
+                    through: Friendship,
+                }
+            ]
+        });
         const user = userData.get({plain:true});
 
         if(!user){
@@ -168,9 +181,9 @@ router.get('/request/:id', async (req,res) =>{
 })
 
 router.post('/request', async (req,res) =>{
-    const {author_id,recipient_id} = req.body
-    console.log(req.body, req.body.author_id, req.body.recipient_id)
-    if(req.body && req.body.author_id && req.body.recipient_id){
+    const {author_id,recipient_id, type, inviteChat_id} = req.body
+
+    if(req.body && req.body.author_id && req.body.recipient_id && req.body.type && req.body.inviteChat_id){
         try{
             const requestData = await Request.create(req.body);
     
