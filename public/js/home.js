@@ -1,6 +1,9 @@
 // query select search input and button. 
 const searchBar = document.querySelector('#search');
 const resultList = document.querySelector('#resultsList');
+const chatTitle = document.querySelector('#chatTitle');
+const chatSubmit = document.querySelector('#submitChat');
+
 const userId = sessionUserId;
 const users = [];
 
@@ -28,7 +31,50 @@ fetch('/api/db/user')
     });
 });
 
+// function to post a new chat
+const createChat = async () => {
+    const title = chatTitle.value.trim();
+    if(title != '');{
+        const postChat = await fetch('/api/db/chat', {
+            method: 'POST',
+            body: JSON.stringify({
+                'title': title,
+            }),
+            headers: {'Content-Type' : 'application/json'},
+        });
+        if(postChat.ok){
+            const chatData = await fetch('/api/db/chat');
+            const chats = await chatData.json();
+            console.log(chats);
+            if (chats.some(chat => {
+                if (chat.title === title) {
+                    foundChat = chat; 
+                    return true; 
+                }
+            })) {
+                const chatUser = await fetch('/api/db/chatuser', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        'user_id': userId,
+                        'chat_id': foundChat.id,
+                    }),
+                    headers: { 'Content-Type' : 'application/json' },
+                });
 
+                if(chatUser.ok){
+                    location.reload();
+                }
+                else{
+                    alert('Failed to set up chatuser')
+                }
+            }
+            
+        }
+        else{
+            alert('NO');
+        };
+    };
+};
  
 //Event listener for when the user types something into the search bar. The createLink function will be used for every user in the 
 //users array which contains the input of the searchbar to create links to user pages. 
@@ -52,3 +98,6 @@ searchBar.addEventListener('keyup', function(event) {
     };
 
 });
+
+// add event listener to chatSubmit to post new chats. 
+chatSubmit.addEventListener('click', () => createChat());
