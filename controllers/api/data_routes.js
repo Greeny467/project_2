@@ -125,7 +125,7 @@ router.get('/message/:id', async (req,res) =>{
 })
 
 router.post('/message', async (req,res) =>{
-    const{text,author_id,recipient_id,chat_id} = req.body
+    const{text,author_id,chat_id} = req.body
     try{
         const messageData = await Message.create(req.body);
 
