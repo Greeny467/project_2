@@ -2,13 +2,7 @@
     {{#if loggedIn}}
     <h2>Inbox</h2>
     {{#if areThereRequests}}
-    {{#each requests as |request|}}
-    <div>
-        <h3>Chat with {{request.user.username}}?</h3>
-        <button id="accept">Accept</button>
-        <button id="decline">Decline</button>
-    </div>
-    {{/each}}
+    <div id="requestPlace"></div>
     {{else}}
     <h2>Empty...</h2>
     {{/if}}
@@ -19,5 +13,12 @@
 </footer>
 
 {{#if loggedIn}}
+{{#if areThereRequests}}
+
+<script>
+    var sessionUserId = {{{userId}}};
+    var sessionRequests = {{{json requests}}};
+</script>
 <script src="/js/inbox.js"></script>
+{{/if}}
 {{/if}}

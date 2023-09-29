@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {User,Chat,Request,Message} =require('../../models');
+const {User,Chat,Request,Message, ChatUser, Friendship} =require('../../models');
 
 //routes for user
 router.get('/user', async (req,res) =>{
@@ -194,7 +194,7 @@ router.post('/request', async (req,res) =>{
 
 router.delete('/request/:id', async (req,res) =>{
     try{
-        const requestData = await User.destroy({
+        const requestData = await Request.destroy({
             where:{
                 id:req.params.id
             }
@@ -211,5 +211,56 @@ router.delete('/request/:id', async (req,res) =>{
         res.status(500).json(err);
     }
 })
+
+// Post Route for Friendship
+router.post('/friendship', async (req, res) => {
+    const {friend1_id, friend2_id} = req.body;
+
+    if(req.body.friend1_id && req.body.friend2_id){
+        try{
+            const friendshipData = Friendship.create(req.body);
+    
+            if(!friendshipData){
+                res.status(404).json({message: 'error creating friendship'})
+            }
+            else{
+                res.status(200).json(friendshipData);
+            }
+        }
+        catch (err) {
+            console.error(err);
+            res.status(500).json(err);
+        }
+    }
+    else{
+        res.status(400).json({message: 'Bad request'});
+    };
+});
+
+
+// Post route for chatuser
+router.post('/chatuser', async (req, res) => {
+    const {user_id, chat_id} = req.body;
+
+    if(req.body.user_id && req.body.chat_id){
+        try{
+            const chatuserData = ChatUser.create(req.body);
+
+            if(!chatuserData){
+                res.status(404).json({message: 'something went wrong creating chatuser'});
+            }
+            else{
+                res.status(200).json(chatuserData);
+            };
+        }
+        catch (err) {
+            console.error(err);
+            res.status(500).json(err);
+        };
+    }
+    else{
+        res.status(400).json({message: 'bad request'});
+    };
+});
 
 module.exports = router;

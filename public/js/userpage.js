@@ -44,7 +44,8 @@ const sendRequest = async (btn) => {
           body: JSON.stringify({
             'author_id': userId,
             'recipient_id': user.id,
-            'type': 'friend'
+            'type': 'friend',
+            'inviteChat_id': 0
           }),
           headers: { 'Content-Type': 'application/json' },
         });

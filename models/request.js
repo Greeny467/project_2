@@ -28,6 +28,9 @@ Request.init(
         type: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        inviteChat_id: {
+            type: DataTypes.INTEGER,
         }
     },
     {
