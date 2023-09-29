@@ -1,7 +1,8 @@
 // query select search input and button. 
 const searchBar = document.querySelector('#search');
 const resultList = document.querySelector('#resultsList');
-
+const userId = sessionUserId;
+const users = [];
 
 // function to create result tabs with links for the given users userpage. 
 const createLink = (user) => {
@@ -15,16 +16,19 @@ const createLink = (user) => {
     resultList.appendChild(resultTab);
 };
 
-const users = [
-    {
-        username: 'sandra',
-        id: 1
-    },
-    {
-        username: 'coolman',
-        id:2
-    }
-];
+
+//Fetch all users for users array. 
+fetch('/api/db/user')
+.then((response) => {
+    return response.json();
+})
+.then((data) =>{
+    data.forEach(user => {
+        users.push(user);
+    });
+});
+
+
  
 //Event listener for when the user types something into the search bar. The createLink function will be used for every user in the 
 //users array which contains the input of the searchbar to create links to user pages. 
@@ -36,7 +40,10 @@ searchBar.addEventListener('keyup', function(event) {
     
     if(input.length){
         result = users.filter((user) => {
-            return user.username.toLowerCase().includes(input.toLowerCase());
+            return (
+                user.username.toLowerCase().includes(input.toLowerCase()) &&
+                user.id !== userId
+            );
         });
 
         result.forEach(user => {

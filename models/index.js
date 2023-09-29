@@ -4,27 +4,27 @@ const Chat = require('./chat');
 const Message = require('./message');
 const Request = require('./request');
 
-// Each chat belongs to two users
-Chat.belongsTo(User, {
-    foreignKey: 'user1_id',
-    as: 'user1',
-    onDelete: 'CASCADE'
-});
-Chat.belongsTo(User, {
-    foreignKey: 'user2_id',
-    as: 'user2',
-    onDelete: 'CASCADE'
-})
+const ChatUser = require('./chatUser');
+const Friendship = require('./friendship');
 
-//  Each message belongs to two users, author and recipient
+// Every chat has multiple users. every user has multiple chats. 
+User.belongsToMany(Chat, {
+    foreignKey: 'user_id',
+    as: 'chatUser',
+    through: ChatUser
+});
+
+Chat.belongsToMany(User, {
+    foreignKey: 'chat_id',
+    through: ChatUser
+});
+
+
+
+//  Each message belongs to one user, the author.
 Message.belongsTo(User, {
     foreignKey: 'author_id',
     as: 'author',
-    onDelete: 'CASCADE'
-});
-Message.belongsTo(User, {
-    foreignKey: 'recipient_id',
-    as: 'recipient',
     onDelete: 'CASCADE'
 });
 
@@ -47,4 +47,22 @@ Message.belongsTo(Chat, {
     onDelete: 'CASCADE'
 });  
 
-module.exports = {User, Chat, Message, Request};
+//users have many friends. 
+
+User.belongsToMany(User, {
+    foreignKey: 'friend1_id',
+    as: 'friend1',
+    through: {
+        model: Friendship,
+    },
+});
+
+User.belongsToMany(User, {
+    foreignKey: 'friend2_id',
+    as: 'friend2',
+    through: {
+        model: Friendship,
+    },
+});
+
+module.exports = {User, Chat, Message, Request, ChatUser, Friendship};

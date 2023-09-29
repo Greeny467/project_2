@@ -5,6 +5,11 @@
         <ul id="resultsList"></ul>
     </div>
     
+    <div>
+        <h3>New Chat</h3>
+        <input name="chatTitle" id="chatTitle" placeholder="New Chat title">
+        <button id="submitChat">Create Chat</button>
+    </div>
 
     {{#if areThereChats}}
     {{#each chats as |chat|}}
@@ -25,5 +30,8 @@
 
 </footer>
 {{#if loggedIn}}
+<script>
+    var sessionUserId = {{userId}};
+</script>
 <script src="/js/home.js"></script>
 {{/if}}

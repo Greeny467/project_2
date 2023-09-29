@@ -1,8 +1,12 @@
 <main>
     
     <h2>{{simpleChat.title}}</h2>
+    <div id="inviteSpace">
+        <button id="inviteButton">Invite</button>
+    </div>
+    
 
-    <div id="messageArea container">
+    <div id="messageArea" class="container">
         {{#unless areThereMessages}}
         <h2>Empty..</h2>
         {{/unless}}

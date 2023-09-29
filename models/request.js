@@ -24,6 +24,13 @@ Request.init(
                 model: 'user',
                 key: 'id',
             }
+        },
+        type: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        inviteChat_id: {
+            type: DataTypes.INTEGER,
         }
     },
     {

@@ -12,9 +12,11 @@
                 <h1 class="center">Terse</h1>
                 <nav class="center nav-wrapper hoverable">
                 <a class="btn " href="/">Home</a>
-                {{#if loggedIn}}
+                {{#if loggedIn}}'
                 <a class="btn" href="/inbox">Inbox</a>
+                <a href="/user/{{userId}}">Profile</a>
                 <button class="btn" id="logout">Logout</a>
+                
                 {{else}}
                 <a class="btn" href="/login">Login/Register</a>
                 {{/if}}
