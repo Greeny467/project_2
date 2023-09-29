@@ -88,25 +88,26 @@ router.get('/inbox', withAuth, async (req, res) => {
 
         //define boolean to show whether there are requests or not
         let areThereRequests;
-
-        if(!inboxData){
+        if(inboxData.length === 0){
             areThereRequests = false;
         }
         else{
-            // simplify inbox data into something easier to use
-            const requests = inboxData.map((request) => (
-                request.get({plain:true})
-            ));
-
-            // render inbox template with specified data. 
-            res.render('inbox', {
-                loggedIn: req.session.loggedIn,
-                userId: req.session.userId,
-                areThereRequests,
-                requests
-            });
-            res.status(200);
+            areThereRequests = true;
         };
+
+         // simplify inbox data into something easier to use
+        const requests = inboxData.map((request) => (
+            request.get({plain:true})
+        ));
+
+        // render inbox template with specified data. 
+        res.render('inbox', {
+            loggedIn: req.session.loggedIn,
+            userId: req.session.userId,
+            areThereRequests,
+            requests
+        });
+        res.status(200);
     }
     catch (err) {
         console.error(err);
