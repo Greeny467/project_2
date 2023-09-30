@@ -33,46 +33,57 @@ fetch('/api/db/user')
 
 // function to post a new chat
 const createChat = async () => {
-    const title = chatTitle.value.trim();
-    if(title != '');{
-        const postChat = await fetch('/api/db/chat', {
-            method: 'POST',
-            body: JSON.stringify({
-                'title': title,
-            }),
-            headers: {'Content-Type' : 'application/json'},
-        });
-        if(postChat.ok){
-            const chatData = await fetch('/api/db/chat');
-            const chats = await chatData.json();
-            console.log(chats);
-            if (chats.some(chat => {
-                if (chat.title === title) {
-                    foundChat = chat; 
-                    return true; 
-                }
-            })) {
-                const chatUser = await fetch('/api/db/chatuser', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        'user_id': userId,
-                        'chat_id': foundChat.id,
-                    }),
-                    headers: { 'Content-Type' : 'application/json' },
-                });
+    const titleInput = chatTitle.value.trim().toLowerCase();
+    const titleArray = titleInput.split(" ");
+    const title = titleArray[0];
 
-                if(chatUser.ok){
-                    location.reload();
+    if(title != '');{
+        const checkTitle = await checkInput(title);
+
+        if(checkTitle != 'badRequest'){
+            const postChat = await fetch('/api/db/chat', {
+                method: 'POST',
+                body: JSON.stringify({
+                    'title': checkTitle,
+                }),
+                headers: {'Content-Type' : 'application/json'},
+            });
+            if(postChat.ok){
+                const chatData = await fetch('/api/db/chat');
+                const chats = await chatData.json();
+                console.log(chats);
+                if (chats.some(chat => {
+                    if (chat.title === checkTitle) {
+                        foundChat = chat; 
+                        return true; 
+                    }
+                })) {
+                    const chatUser = await fetch('/api/db/chatuser', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            'user_id': userId,
+                            'chat_id': foundChat.id,
+                        }),
+                        headers: { 'Content-Type' : 'application/json' },
+                    });
+    
+                    if(chatUser.ok){
+                        location.reload();
+                    }
+                    else{
+                        alert('Failed to set up chatuser')
+                    }
                 }
-                else{
-                    alert('Failed to set up chatuser')
-                }
+                
             }
-            
+            else{
+                alert('NO');
+            };
         }
         else{
-            alert('NO');
-        };
+            alert('Not a word.')
+        }
+
     };
 };
  
