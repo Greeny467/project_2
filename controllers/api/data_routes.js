@@ -1,4 +1,6 @@
 const router = require('express').Router();
+require('dotenv');
+
 const {User,Chat,Request,Message, ChatUser, Friendship} =require('../../models');
 
 //routes for user
@@ -274,6 +276,43 @@ router.post('/chatuser', async (req, res) => {
     else{
         res.status(400).json({message: 'bad request'});
     };
+});
+
+router.post('/oneword', async (req, res) => {
+    const {word} = req.body;
+    
+    if(req.body.word){
+        try{
+            const word = req.body.word;
+            const url = `https://wordsapiv1.p.rapidapi.com/words/${word}/typeOf`;
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+                    'X-RapidAPI-Host': 'wordsapiv1.p.rapidapi.com'
+                }
+            };
+
+            const response = await fetch(url, options);
+            const result = await response.text();
+            console.log(result);
+
+            if(response.status === 200){
+                const capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+                res.status(200).json({response: capitalizedWord});
+            }
+            else{
+                res.status(200).json({response: 'badRequest'});
+            };
+        } 
+        catch (err) {
+            console.error(err);
+            res.status(500).json(err);
+        };
+    }
+    else{
+        res.status(400).json({message: 'bad request'});
+    }
 });
 
 module.exports = router;
