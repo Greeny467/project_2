@@ -185,7 +185,10 @@ router.get('/request/:id', async (req,res) =>{
 router.post('/request', async (req,res) =>{
     const {author_id,recipient_id, type, inviteChat_id} = req.body
 
-    if(req.body && req.body.author_id && req.body.recipient_id && req.body.type && req.body.inviteChat_id){
+    if(req.body.author_id !== undefined &&
+        req.body.recipient_id !== undefined &&
+        req.body.type !== undefined &&
+        req.body.inviteChat_id !== null){
         try{
             const requestData = await Request.create(req.body);
     
