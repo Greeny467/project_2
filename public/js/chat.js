@@ -37,7 +37,7 @@ const setFriends = () => {
     .then((requests) => {
         friends.forEach(friend => {
             const isFriendInChat = chat.users.some(user => user.id === friend.id);
-            const hasRequestToFriend = requests.some(request => request.recipient_id === friend.id);
+            const hasRequestToFriend = requests.some(request => request.recipient_id === friend.id && request.inviteChat_id === chat.id);
         
             if (!isFriendInChat && !hasRequestToFriend) {
                 friendsToInvite.push(friend);
