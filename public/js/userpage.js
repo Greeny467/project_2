@@ -30,9 +30,12 @@ const createChatLink = (chat) => {
 const createFriendLink = (friend) => {
     const friendLink = document.createElement('a');
     friendLink.setAttribute('href', `/user/${friend.id}`)
-    friendLink.textContent = friend.username;
-    friendLink.className = 'center'
+    friendLink.className = 'center container'
 
+    const friendLinkText = document.createElement('h4');
+    friendLinkText.textContent = friend.username;
+
+    friendLink.append(friendLinkText);
     userArea.append(friendLink);
 }
 
@@ -71,6 +74,7 @@ if(user.id === userId){
     const header1 = document.createElement('h2');
     header1.textContent = 'Your friends';
     userArea.append(header1);
+
 
     friendArray.forEach(friend => {
         createFriendLink(friend);  
