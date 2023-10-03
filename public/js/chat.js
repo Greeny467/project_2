@@ -11,6 +11,8 @@ const chat = sessionChat;
 const friends = [];
 let friendsToInvite = [];
 
+const pageMessages = [];
+
 fetch(`/api/db/user/${userId}`)
 .then((response) => {
     return response.json();
@@ -46,48 +48,69 @@ const setFriends = () => {
 
 console.log(friendsToInvite);
 
+const generateMessage = async (message) => {
+    const messageBlock = document.createElement('div');
+
+    let authorName;
+    if(message.author_id === userId) {
+        // Roughly the css for user's messages to appear the on the right: class = "s6 offset-s6 m6 offset-m6 l6 offset-l6" s, m, & l are for responsiveness
+        messageBlock.className = 'rightMessage s6 offset-s6 m6 offset-m6 l6 offset-l6';
+        authorName = 'You'
+    }
+    else{
+        // Roughly the css for friend's messages to appear on the left: class = "s6 m6 l6"
+        messageBlock.className = 'leftMessage s6 m6 l6';
+        authorName = message.author.username;
+    };
+
+    console.log(authorName, message.createdAt, message.text);
+    const messageHeading = document.createElement('div');
+    messageHeading.className = 'messageHeading';
+
+    const authorText = document.createElement('h4');
+    authorText.textContent = authorName;
+
+    const messageDate = document.createElement('p');
+    messageDate.textContent = message.createdAt;
+
+    const messageText = document.createElement('p');
+    messageText.textContent = message.text;
+
+    messageHeading.appendChild(authorText);
+    messageHeading.appendChild(messageDate);
+
+    messageBlock.appendChild(messageHeading);
+    messageBlock.appendChild(messageText);
+
+    messageArea.appendChild(messageBlock);
+};
 
 console.log(messages, userId, chat);
 
 // For each message belonging to the chat, if it was written by someone else it is created on the left side of the screen, if the client user made it, it is created on the right side. 
 const createAllMessages = async () => {
     messages.forEach(message => {
-        const messageBlock = document.createElement('div');
+        pageMessages.push(message);
 
-        let authorName;
-        if(message.author_id === userId) {
-            // Roughly the css for user's messages to appear the on the right: class = "s6 offset-s6 m6 offset-m6 l6 offset-l6" s, m, & l are for responsiveness
-            messageBlock.className = 'rightMessage s6 offset-s6 m6 offset-m6 l6 offset-l6';
-            authorName = 'You'
-        }
-        else{
-            // Roughly the css for friend's messages to appear on the left: class = "s6 m6 l6"
-            messageBlock.className = 'leftMessage s6 m6 l6';
-            authorName = message.author.username;
-        };
-
-        console.log(authorName, message.createdAt, message.text);
-        const messageHeading = document.createElement('div');
-        messageHeading.className = 'messageHeading';
-
-        const authorText = document.createElement('h4');
-        authorText.textContent = authorName;
-
-        const messageDate = document.createElement('p');
-        messageDate.textContent = message.createdAt;
-
-        const messageText = document.createElement('p');
-        messageText.textContent = message.text;
-
-        messageHeading.appendChild(authorText);
-        messageHeading.appendChild(messageDate);
-
-        messageBlock.appendChild(messageHeading);
-        messageBlock.appendChild(messageText);
-
-        messageArea.appendChild(messageBlock);
+        generateMessage(message);
     });
 }
+
+// function to get all messages which belong to this chat and check If they have already been put on the screen. If they have not, they are populated on the screen. 
+const findNewMessages = async () => {
+    const messageData = await fetch(`/api/db/chat/message/${chat.id}`);
+    const chatMessages = await messageData.json();
+
+    chatMessages.forEach(sendMessage => {
+
+        if(pageMessages.some(pageMessage => pageMessage.id === sendMessage.id)){
+            return
+        }
+        else{
+            generateMessage(sendMessage);
+        };
+    });
+};
 
 // functionality to the back button for the invite tab.
 const inviteBackButton = async (element) => {
@@ -145,3 +168,6 @@ const inviteTab = async () =>{
 setFriends();
 createAllMessages();
 inviteButton.addEventListener('click', () => inviteTab());
+
+// check for new messages after a certain amount of time. 
+setInterval(findNewMessages, 15000);

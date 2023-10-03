@@ -109,6 +109,28 @@ router.post('/chat', async (req,res) =>{
 })
 
 //message route
+router.get('/chat/message/:chat_id', async (req, res) => {
+    try{
+        const messageData = await Message.findAll({
+            where: {
+                chat_id: req.params.chat_id,
+            },
+            include: [{
+                model: User,
+                as: 'author',
+                attributes: ['username', 'id']
+            }]
+        });
+
+        const chatMessages = messageData.map((message) => message.get({ plain: true }));
+
+        res.status(200).json(chatMessages);
+    }
+    catch (err){
+        console.error(err);
+        res.status(500).json(err);
+    }
+})
 router.get('/message/:id', async (req,res) =>{
     try{
         const messageData = await Message.findByPk(req.params.id);
