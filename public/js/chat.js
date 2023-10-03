@@ -178,4 +178,4 @@ createAllMessages();
 inviteButton.addEventListener('click', () => inviteTab());
 
 // check for new messages after a certain amount of time. 
-setInterval(findNewMessages, 15000);
+setInterval(findNewMessages, 5000);
