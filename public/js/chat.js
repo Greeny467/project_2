@@ -49,17 +49,20 @@ const setFriends = () => {
 console.log(friendsToInvite);
 
 const generateMessage = async (message) => {
+    const messageRow = document.createElement('div');
+    messageRow.className = 'row';
+
     const messageBlock = document.createElement('div');
 
     let authorName;
     if(message.author_id === userId) {
         // Roughly the css for user's messages to appear the on the right: class = "s6 offset-s6 m6 offset-m6 l6 offset-l6" s, m, & l are for responsiveness
-        messageBlock.className = 'rightMessage s6 offset-s6 m6 offset-m6 l6 offset-l6';
+        messageBlock.className = 'rightMessage right s6 offset-s6 m6 offset-m6 l6 offset-l6';
         authorName = 'You'
     }
     else{
         // Roughly the css for friend's messages to appear on the left: class = "s6 m6 l6"
-        messageBlock.className = 'leftMessage s6 m6 l6';
+        messageBlock.className = 'leftMessage s2 m3 l4';
         authorName = message.author.username;
     };
 
@@ -82,7 +85,8 @@ const generateMessage = async (message) => {
     messageBlock.appendChild(messageHeading);
     messageBlock.appendChild(messageText);
 
-    messageArea.appendChild(messageBlock);
+    messageRow.appendChild(messageBlock);
+    messageArea.appendChild(messageRow);
 };
 
 console.log(messages, userId, chat);
@@ -143,17 +147,21 @@ const inviteTab = async () =>{
     inviteButton.style.display = 'none';
 
     const inviteArea = document.createElement('div');
+    inviteArea.className = 'col right';
 
     const backButton = document.createElement('button');
     backButton.textContent = 'Back';
+    backButton.className = ' btn'
     backButton.addEventListener('click', () => inviteBackButton(inviteArea));
     inviteArea.append(backButton)
 
     friendsToInvite.forEach(friend => {
         const friendName = document.createElement('p');
+        friendName.className = ''
         friendName.textContent = friend.username;
 
         const inviteUser = document.createElement('button');
+        inviteUser.className = 'btn'
         inviteUser.textContent = 'Invite Friend';
         inviteUser.addEventListener('click', () => inviteUserSend(friend, inviteUser));
 
