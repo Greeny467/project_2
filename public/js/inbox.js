@@ -75,10 +75,12 @@ const createRequestElement = async (request) =>{
 
     const acceptButton = document.createElement('button');
     acceptButton.textContent = 'Yes';
+    acceptButton.className = 'btn';
     acceptButton.addEventListener('click', () => acceptRequest(request, requestBox));
 
     const rejectButton = document.createElement('button');
     rejectButton.textContent = 'No';
+    rejectButton.className = 'btn';
     rejectButton.addEventListener('click', () => deleteRequest(request, requestBox));
 
     requestBox.append(header);

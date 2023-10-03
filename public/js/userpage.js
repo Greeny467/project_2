@@ -14,7 +14,7 @@ user.friend2.forEach(friend => {
 
 // get the area where changes will be made. 
 const userArea = document.querySelector('#userArea');
-
+userArea.className = 'container center'
 // Functions to create link to given chat or friend userpage
 const createChatLink = (chat) => {
     const chatbox = document.createElement('a');
@@ -31,6 +31,7 @@ const createFriendLink = (friend) => {
     const friendLink = document.createElement('a');
     friendLink.setAttribute('href', `/user/${friend.id}`)
     friendLink.textContent = friend.username;
+    friendLink.className = 'center'
 
     userArea.append(friendLink);
 }
@@ -76,6 +77,7 @@ if(user.id === userId){
     });
 
     const header2 = document.createElement('h2');
+    header2.className = 'container'
     header2.textContent = 'Your chats';
     userArea.append(header2);
 
