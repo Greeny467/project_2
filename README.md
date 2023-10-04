@@ -2,11 +2,13 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+![](terse.png)
+
 # Links
 
-GitHub Repository: https://github.com/Greeny467/project_2
+GitHub Repository: https://github.com/Greeny467/terse_social_media
 <br>
-Deployed Application:
+Deployed Application: https://tersesocialmedia-production.up.railway.app/
 
 ## Description
 
